@@ -141,6 +141,17 @@ async function main() {
         document.querySelector(".circle").style.left = (currentSong.currentTime / currentSong.duration) * 100 + "%";
     })
 
+    // Listen for ended event to auto-play the next song
+    currentSong.addEventListener("ended", () => {
+        let index = songs.indexOf(currentSong.src.split("/").slice(-1)[0]);
+        if ((index + 1) < songs.length) {
+            playMusic(songs[index + 1]);
+        } else {
+            // Optionally, you can loop back to the first song
+            playMusic(songs[0]);
+        }
+    });
+
     // Add an event listener to seekbar
     document.querySelector(".seekbar").addEventListener("click", e => {
         let percent = (e.offsetX / e.target.getBoundingClientRect().width) * 100;
